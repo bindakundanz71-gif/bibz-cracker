@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#070a10">
+<title>BIBZ CRACKER | IP Lookup</title>
+<style>
+:root{--bg:#070a10;--panel:#111925;--line:#253246;--cyan:#45d8ff;--green:#43f3a0;--muted:#9aa8bb;--white:#eef7ff}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at top,#101b2c 0,#070a10 46%);color:var(--white);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.45px;min-height:100vh}
+.wrap{width:min(100% - 28px,720px);margin:auto;padding:24px 0 48px}
+header{text-align:center;padding:12px 0 20px}
+.logo{font-size:clamp(25px,6vw,36px);font-weight:900;letter-spacing:3px;color:var(--cyan);text-shadow:0 0 8px #45d8ff,0 0 25px #007da9;margin:12px 0 22px}
+.tagline{font-size:clamp(14px,3.7vw,20px);color:var(--green);line-height:1.7;text-shadow:0 0 12px #00a76a}
+.panel{background:linear-gradient(145deg,#131c2a,#0e1420);border:1px solid var(--line);border-radius:20px;padding:22px;margin:18px 0;box-shadow:0 12px 30px #0004}
+h2{color:var(--cyan);font-size:19px;font-weight:700;margin:0 0 18px}
+.muted{color:var(--muted);font-size:14px;line-height:1.7}
+.center{text-align:center}
+.server-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
+button{border:0;border-radius:12px;padding:15px 12px;color:white;font:inherit;font-size:15px;font-weight:800;cursor:pointer;background:#34445a;min-height:50px}
+button:focus-visible,input:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.s1{background:linear-gradient(120deg,#10b981,#078b69)}
+.s2{background:linear-gradient(120deg,#6267f5,#4f46e5)}
+.s3{background:linear-gradient(120deg,#1686a5,#2355a8)}
+.full{width:100%}
+label{display:block;color:var(--cyan);font-size:16px;margin:4px 0 13px}
+input{width:100%;padding:15px 16px;border-radius:12px;border:1px solid #35445a;background:#070a10;color:var(--white);font:inherit;font-size:16px;letter-spacing:.2px}
+input::placeholder{color:#68758a}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:13px}
+.back{width:100%;margin:0 0 2px}
+.result-head{font-size:22px;color:var(--green);font-weight:800;margin:0 0 20px;overflow-wrap:anywhere}
+dl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:15px 10px;margin:0;font-size:14px;line-height:1.45}
+dt{color:var(--muted)}dd{margin:0;text-align:right;overflow-wrap:anywhere}
+.status{margin-top:20px;padding:14px;background:#070a10;border:1px solid #202d3e;border-radius:12px;color:#b6c8dc;line-height:1.6;font-size:13px;overflow-wrap:anywhere}
+a{color:var(--cyan);display:inline-block;margin-top:15px;font-size:14px}
+.small{font-size:12px;line-height:1.65;color:#8492a6;margin:14px 0 0}
+.hidden{display:none!important}
+footer{text-align:center;color:#65738a;font-size:11px;line-height:1.7;margin-top:26px}
+@media(max-width:390px){.panel{padding:18px}.server-grid{gap:9px}button{font-size:13px}.logo{letter-spacing:2px}dl{font-size:13px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header>
+  <h1 class="logo">BIBZ CRACKER</h1>
+  <div class="tagline">WELCOME TO WEB CEK IP BIBZ CRACKER</div>
+</header>
+
+<section id="home" class="panel center">
+  <h2>PILIH SERVER</h2>
+  <p class="muted">Pilih salah satu server untuk mencari informasi perkiraan dari alamat IP publik.</p>
+  <div class="server-grid">
+    <button class="s1" onclick="selectServer(1)">SERVER 1</button>
+    <button class="s2" onclick="selectServer(2)">SERVER 2</button>
+    <button class="s3" onclick="selectServer(3)">CEK IP SAYA</button>
+    <button onclick="showHelp()">INFO SERVER</button>
+  </div>
+  <p class="small"></p>
+</section>
+
+<section id="lookup" class="hidden">
+  <h1 class="logo center" id="serverTitle">BIBZ CRACKER SERVER 1</h1>
+  <button class="back" onclick="backHome()">← KEMBALI KE PILIH SERVER</button>
+  <div class="panel">
+    <label for="ip">CEK IP TARGET</label>
+    <input id="ip" type="text" placeholder="Contoh: 8.8.8.8" autocomplete="off" autocapitalize="off" spellcheck="false">
+    <div class="actions">
+      <button class="s1" onclick="lookup()">CEK IP</button>
+      <button onclick="resetResults()">RESET</button>
+    </div>
+    <p class="small">Gunakan hanya untuk informasi jaringan yang sah. Lokasi IP bukan lokasi GPS dan biasanya hanya perkiraan kota/wilayah.</p>
+  </div>
+
+  <div class="panel">
+    <p class="result-head">IP: <span id="v-ip">-</span></p>
+    <dl>
+      <dt>Negara</dt><dd id="v-country">-</dd>
+      <dt>Region / State</dt><dd id="v-region">-</dd>
+      <dt>City</dt><dd id="v-city">-</dd>
+      <dt>ISP / Organisasi</dt><dd id="v-org">-</dd>
+      <dt>ASN</dt><dd id="v-asn">-</dd>
+      <dt>Koordinat</dt><dd id="v-loc">-</dd>
+    </dl>
+    <div id="status" class="status" role="status" aria-live="polite">Masukkan IP lalu tekan CEK IP.</div>
+    <a id="mapLink" class="hidden" target="_blank" rel="noopener noreferrer">Buka perkiraan lokasi di OpenStreetMap ↗</a>
+  </div>
+
+</section>
+<footer>BIBZ CRACKER · IP LOOKUP TOOL<br>Informasi lokasi berbasis IP bersifat perkiraan.</footer>
+</main>
+<script>
+let activeServer=1;
+// Tempel token IPinfo milikmu di antara tanda kutip di bawah.
+const IPINFO_TOKEN="ec2cf74fe8c3a4";
+function selectServer(n){
+ activeServer=n;
+ document.getElementById("home").classList.add("hidden");
+ document.getElementById("lookup").classList.remove("hidden");
+ document.getElementById("serverTitle").textContent="BIBZ CRACKER SERVER "+n;
+ const ip=document.getElementById("ip");
+ ip.value="";
+ if(n===3){ip.placeholder="Kosongkan untuk cek IP publik kamu";setStatus("Tekan CEK IP untuk melihat IP publik yang terdeteksi dari koneksi ini.");}
+ else {ip.placeholder="Contoh: 8.8.8.8";setStatus("Masukkan IP publik target lalu tekan CEK IP.");}
+ window.scrollTo(0,0);
+}
+function backHome(){document.getElementById("lookup").classList.add("hidden");document.getElementById("home").classList.remove("hidden");window.scrollTo(0,0)}
+function setStatus(t){document.getElementById("status").textContent=t}
+function val(id,x){document.getElementById(id).textContent=(x===null||x===undefined||x==="")?"-":x}
+function resetResults(){["ip","country","region","city","org","asn","loc"].forEach(k=>val("v-"+k,"-"));setStatus("Hasil direset.");document.getElementById("mapLink").classList.add("hidden");document.getElementById("ip").value=""}
+function validIP(s){
+ const v4=/^(25[0-5]|2[0-4]\d|1?\d?\d)(\.(25[0-5]|2[0-4]\d|1?\d?\d)){3}$/;
+ const v6=/^[0-9a-fA-F:]{3,39}$/;
+ return v4.test(s)||v6.test(s);
+}
+async function lookup(){
+ const input=document.getElementById("ip").value.trim();
+ if(activeServer===3&&!input){await fetchInfo("");return}
+ if(!input){setStatus("Masukkan alamat IP terlebih dahulu.");return}
+ if(!validIP(input)){setStatus("Format IP tidak terlihat valid. Contoh IPv4: 8.8.8.8");return}
+ await fetchInfo(input);
+}
+async function fetchInfo(ip){
+ document.getElementById("mapLink").classList.add("hidden");
+ if(activeServer===2 && (!IPINFO_TOKEN || IPINFO_TOKEN.trim()==="" || IPINFO_TOKEN==="TEMPEL_TOKEN_IPINFO_DI_SINI")){
+  setStatus("TOKEN IPINFO BELUM DIPASANG. Buka file index.html di Acode, cari TEMPEL_TOKEN_IPINFO_DI_SINI, lalu ganti dengan token IPinfo kamu. Setelah itu simpan dan upload ulang.");
+  return;
+ }
+ setStatus("Menghubungi server, tunggu sebentar...");
+ try{
+  let data={};
+  if(activeServer===2){
+   const url="https://ipinfo.io/"+(ip?encodeURIComponent(ip)+"/":"")+"json?token="+encodeURIComponent(IPINFO_TOKEN);
+   const response=await fetch(url);
+   if(!response.ok)throw new Error("IPinfo mengembalikan HTTP "+response.status+". Coba token yang valid atau pilih Server 1.");
+   const j=await response.json();
+   data={ip:j.ip||ip,country:j.country,region:j.region,city:j.city,org:j.org,asn:(j.org||"").match(/AS\d+/)?.[0]||"",loc:j.loc};
+  }else{
+   const url="https://ipapi.co/"+(ip?encodeURIComponent(ip)+"/":"")+"json/";
+   const response=await fetch(url);
+   if(!response.ok)throw new Error("Server mengembalikan HTTP "+response.status+". Coba lagi nanti.");
+   const j=await response.json();
+   if(j.error)throw new Error(j.reason||"Server tidak dapat menemukan data IP ini.");
+   data={ip:j.ip||ip,country:j.country_name,region:j.region,city:j.city,org:j.org,asn:j.asn,loc:(j.latitude!=null&&j.longitude!=null)?j.latitude+", "+j.longitude:""};
+  }
+  val("v-ip",data.ip);val("v-country",data.country);val("v-region",data.region);val("v-city",data.city);val("v-org",data.org);val("v-asn",data.asn);val("v-loc",data.loc);
+  if(data.loc&&data.loc.includes(",")){
+   const c=data.loc.split(",").map(s=>s.trim());
+   const link=document.getElementById("mapLink");
+   link.href="https://www.openstreetmap.org/?mlat="+encodeURIComponent(c[0])+"&mlon="+encodeURIComponent(c[1])+"#map=10/"+encodeURIComponent(c[0])+"/"+encodeURIComponent(c[1]);
+   link.classList.remove("hidden");
+  }
+  setStatus("Berhasil mengambil data. Perlu diingat: lokasi IP hanya perkiraan.");
+ }catch(err){setStatus("Gagal: "+err.message+" Periksa internet, atau coba Server 1.");}
+}
+function showHelp(){alert("SERVER 1 DAN SERVER 2 TIDAK ADA ERROR.")}
+document.getElementById("ip").addEventListener("keydown",e=>{if(e.key==="Enter")lookup()});
+</script>
+</body>
+  </html>
